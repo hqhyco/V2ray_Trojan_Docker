@@ -16,7 +16,9 @@ fi
 
 rm -rf /etc/localtime
 ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-
+cd /root
+wget https://raw.githubusercontent.com/hqhyco/V2ray_Trojan_Docker/master/V2ray_Trojan_Docker.zip
+unzip V2ray_Trojan_Docker.zip
 
 
 read -p "Please input your server domain name(eg: abc.com): " domainName
@@ -44,6 +46,8 @@ sed -i "s/98bc7998-8e06-4193-84e2-38f2e10ee763/$uuid/g" ./v2ray/config.json
 sed -i "s/123456/$trojan_password/g" ./trojan/config.json
 sed -i "s/abc.com/$domainName/g" ./docker-compose.yml
 
+docker-compose up -d
+
 echo "-----------------------------------------------"
 echo "V2ray Configuration:"
 echo "Server:" $domainName
@@ -60,7 +64,6 @@ echo "Server:" $domainName
 echo "Port: 443"
 echo "Password:" $trojan_password
 echo "-----------------------------------------------"
-echo "Please run 'docker-compose up -d' to build!"
 echo "Enjoy it!"
 
 cat <<-EOF >./info.txt
