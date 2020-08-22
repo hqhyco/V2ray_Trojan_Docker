@@ -3,7 +3,9 @@
 参考大神的https://github.com/maidoudouo/V2ray_Trojan_Docker
 ```
 改用caddy2，随便加了个伪装的静态网页
+
 添加支持最新的vless协议
+
 可以自由选择vmess或者vless协议
 
 ## 请先安装好docker和docker-compose
