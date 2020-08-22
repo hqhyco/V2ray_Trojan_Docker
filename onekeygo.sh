@@ -193,7 +193,8 @@ start_menu(){
     clear
     green " ===================================="
     green " 介绍：v2ray+trojan+网页伪装docker版 "
-    green " 系统：debian或者ubuntu,centos未测试"
+    green " 系统：Ubuntu 16+/Debian 8+/CentOS 7+"
+    green " centos未测试，应该也可以"
     green " ===================================="
     echo
     green " 1. v2ray+vless+ws+tls+trojan+网页伪装"
