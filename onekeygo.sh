@@ -24,7 +24,7 @@ fi
 function first(){
 
 $cmd update -y
-$cmd install wget unzip curl -y
+$cmd install unzip curl -y
 
 checkDocker=$(which docker)
 checkDockerCompose=$(which docker-compose)
@@ -48,8 +48,15 @@ fi
 rm -rf /etc/localtime
 ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 cd /root
+if [[ -e "V2ray_Trojan_Docker.zip"]]; then
+unzip -o V2ray_Trojan_Docker.zip
+[[ -e "/root/v2ray/config.json"]] && rm /root/v2ray/config.json
+else
 wget https://raw.githubusercontent.com/hqhyco/V2ray_Trojan_Docker/master/V2ray_Trojan_Docker.zip
-unzip V2ray_Trojan_Docker.zip
+unzip -o V2ray_Trojan_Docker.zip
+fi
+
+
 }
 
 function install_vmess(){
