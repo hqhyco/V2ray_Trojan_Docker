@@ -8,8 +8,7 @@
 
 可以自由选择vmess或者vless协议
 
-## 请先安装好docker和docker-compose
-## 先安装依赖wget unzip
+## 先安装依赖wget
 
 ## 一键脚本
 ```
