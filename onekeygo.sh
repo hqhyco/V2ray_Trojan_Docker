@@ -35,17 +35,17 @@ unzip V2ray_Trojan_Docker.zip
 
 function install_vmess(){
 
-read -p "Please input your server domain name(eg: abc.com): " domainName
+read -p "请输入你的域名(eg: abc.com): " domainName
 if [ "$domainName" = "" ];then 
   echo "bye~"
         exit
 else
-  echo "Your domain name is: "$domainName
+  echo "你输入的域名是: "$domainName
   sed -i "s/abc.com/$domainName/g" ./docker-compose.yml
   sed -i "s/abc.com/$domainName/g" ./caddy/Caddyfile
   sed -i "s/abc.com/$domainName/g" ./trojan/config.json
 fi
-  read -p "Please input your trojan password(eg: 123456): " trojan_password
+  read -p "请输入trojan的密码(eg: 123456): " trojan_password
   sed -i "s/123456/$trojan_password/g" ./trojan/config.json
 
 
@@ -101,17 +101,17 @@ EOF
 
 function install_vless(){
 
-read -p "Please input your server domain name(eg: abc.com): " domainName
+read -p "请输入你的域名(eg: abc.com): " domainName
 if [ "$domainName" = "" ];then 
   echo "bye~"
         exit
 else
-  echo "Your domain name is: "$domainName
+  echo "你输入的域名是: "$domainName
   sed -i "s/abc.com/$domainName/g" ./docker-compose.yml
   sed -i "s/abc.com/$domainName/g" ./caddy/Caddyfile
   sed -i "s/abc.com/$domainName/g" ./trojan/config.json
 fi
-  read -p "Please input your trojan password(eg: 123456): " trojan_password
+  read -p "请输入trojan的密码(eg: 123456): " trojan_password
   sed -i "s/123456/$trojan_password/g" ./trojan/config.json
 
 sys=$(uname)
