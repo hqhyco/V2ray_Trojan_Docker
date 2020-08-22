@@ -13,6 +13,6 @@
 
 ## 一键脚本
 ```
-wget https://raw.githubusercontent.com/hqhyco/V2ray_Trojan_Docker/master/onekeygo.sh && bash onekeygo.sh
+wget -N --no-check-certificate https://raw.githubusercontent.com/hqhyco/V2ray_Trojan_Docker/master/onekeygo.sh && bash onekeygo.sh
 ```
 ## 本人小白，本意是自己用用，有什么问题也不用问我，我也不懂。。。我只会看大佬的作品，稍微改改
