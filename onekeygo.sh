@@ -166,15 +166,15 @@ EOF
 start_menu(){
     clear
     green " ===================================="
-    green " ½éÉÜ£ºv2ray+trojan+ÍøÒ³Î±×°docker°æ "
-    green " ÏµÍ³£ºdebian»òÕßubuntu,centosÎ´²âÊÔ"
+    green " ä»‹ç»ï¼šv2ray+trojan+ç½‘é¡µä¼ªè£…dockerç‰ˆ "
+    green " ç³»ç»Ÿï¼šdebianæˆ–è€…ubuntu,centosæœªæµ‹è¯•"
     green " ===================================="
     echo
-    green " 1.v2ray+vless+ws+tls+trojan+ÍøÒ³Î±×°"
-    green " 2. v2ray+vmess+ws+tls+trojan+ÍøÒ³Î±×°"
-    blue " 0. ÍË³ö½Å±¾"
+    green " 1. v2ray+vless+ws+tls+trojan+ç½‘é¡µä¼ªè£…"
+    green " 2. v2ray+vmess+ws+tls+trojan+ç½‘é¡µä¼ªè£…"
+    blue " 0. é€€å‡ºè„šæœ¬"
     echo
-    read -p "ÇëÊäÈëÊı×Ö:" num
+    read -p "è¯·è¾“å…¥æ•°å­—:" num
     case "$num" in
     1)
     first
@@ -189,7 +189,7 @@ start_menu(){
     ;;
     *)
     clear
-    red "ÇëÊäÈëÕıÈ·Êı×Ö"
+    red "è¯·è¾“å…¥æ­£ç¡®æ•°å­—"
     sleep 1s
     start_menu
     ;;
