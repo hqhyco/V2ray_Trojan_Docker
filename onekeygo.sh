@@ -15,9 +15,9 @@ red(){
 if [[ $(command -v apt-get) ]]; then
   cmd="apt-get"
 elif [[ $(command -v yum) ]]; then
-		cmd="yum"
+  cmd="yum"
 else
-	green "哈哈……这个辣鸡脚本不支持你的系统。 (-_-)"
+  green "哈哈……这个辣鸡脚本不支持你的系统。 (-_-)"
   green "备注: 仅支持 Ubuntu 16+ / Debian 8+ / CentOS 7+ 系统" && exit 1
 fi
 
