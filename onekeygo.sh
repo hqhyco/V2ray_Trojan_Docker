@@ -124,7 +124,7 @@ else
 fi
 
 sed -i "s/98bc7998-8e06-4193-84e2-38f2e10ee763/$uuid/g" ./v2ray/config-vless.json
-cp ./v2ray/config-vmess.json ./v2ray/config.json
+cp ./v2ray/config-vless.json ./v2ray/config.json
 docker-compose up -d
 echo "-----------------------------------------------"
 echo "V2ray Configuration:"
