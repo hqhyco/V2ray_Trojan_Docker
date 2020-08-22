@@ -177,9 +177,11 @@ start_menu(){
     read -p "ÇëÊäÈëÊı×Ö:" num
     case "$num" in
     1)
+    first
     install_vless
     ;;
     2)
+    first
     install_vmess
     ;;
     0)
