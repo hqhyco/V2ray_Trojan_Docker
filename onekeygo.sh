@@ -1,5 +1,17 @@
 #!/bin/bash
 
+blue(){
+    echo -e "\033[34m\033[01m$1\033[0m"
+}
+green(){
+    echo -e "\033[32m\033[01m$1\033[0m"
+}
+red(){
+    echo -e "\033[31m\033[01m$1\033[0m"
+}
+
+function first(){
+
 checkDocker=$(which docker)
 checkDockerCompose=$(which docker-compose)
 if [ "$checkDocker" == "" ] && [ "$checkDockerCompose" == "" ]; then
@@ -19,35 +31,36 @@ ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 cd /root
 wget https://raw.githubusercontent.com/hqhyco/V2ray_Trojan_Docker/master/V2ray_Trojan_Docker.zip
 unzip V2ray_Trojan_Docker.zip
+}
 
+function install_vmess(){
 
 read -p "Please input your server domain name(eg: abc.com): " domainName
-
 if [ "$domainName" = "" ];then 
-        echo "bye~"
+  echo "bye~"
         exit
 else
-	echo "Your domain name is: "$domainName
-	sed -i "s/abc.com/$domainName/g" ./caddy/Caddyfile
-	sed -i "s/abc.com/$domainName/g" ./trojan/config.json
+  echo "Your domain name is: "$domainName
+  sed -i "s/abc.com/$domainName/g" ./docker-compose.yml
+  sed -i "s/abc.com/$domainName/g" ./caddy/Caddyfile
+  sed -i "s/abc.com/$domainName/g" ./trojan/config.json
 fi
+  read -p "Please input your trojan password(eg: 123456): " trojan_password
+  sed -i "s/123456/$trojan_password/g" ./trojan/config.json
+
 
 sys=$(uname)
 if [ "$sys" == "Linux" ]; then
-	uuid=$(cat /proc/sys/kernel/random/uuid)
+  uuid=$(cat /proc/sys/kernel/random/uuid)
 elif [ "$sys" == "Darwin" ]; then
-	uuid=$(echo $(uuidgen) | tr '[A-Z]' '[a-z]')
+  uuid=$(echo $(uuidgen) | tr '[A-Z]' '[a-z]')
 else
-	uuid=$(od -x /dev/urandom | head -1 | awk '{OFS="-"; print $2$3,$4,$5,$6,$7$8$9}')
+  uuid=$(od -x /dev/urandom | head -1 | awk '{OFS="-"; print $2$3,$4,$5,$6,$7$8$9}')
 fi
 
-read -p "Please input your trojan password(eg: 123456): " trojan_password
-sed -i "s/98bc7998-8e06-4193-84e2-38f2e10ee763/$uuid/g" ./v2ray/config.json
-sed -i "s/123456/$trojan_password/g" ./trojan/config.json
-sed -i "s/abc.com/$domainName/g" ./docker-compose.yml
-
+sed -i "s/98bc7998-8e06-4193-84e2-38f2e10ee763/$uuid/g" ./v2ray/config-vmess.json
+cp ./v2ray/config-vmess.json ./v2ray/config.json
 docker-compose up -d
-
 echo "-----------------------------------------------"
 echo "V2ray Configuration:"
 echo "Server:" $domainName
@@ -84,4 +97,104 @@ cat <<-EOF >./info.txt
 	Password: $trojan_password
 	-----------------------------------------------
 EOF
+}
+
+function install_vless(){
+
+read -p "Please input your server domain name(eg: abc.com): " domainName
+if [ "$domainName" = "" ];then 
+  echo "bye~"
+        exit
+else
+  echo "Your domain name is: "$domainName
+  sed -i "s/abc.com/$domainName/g" ./docker-compose.yml
+  sed -i "s/abc.com/$domainName/g" ./caddy/Caddyfile
+  sed -i "s/abc.com/$domainName/g" ./trojan/config.json
+fi
+  read -p "Please input your trojan password(eg: 123456): " trojan_password
+  sed -i "s/123456/$trojan_password/g" ./trojan/config.json
+
+sys=$(uname)
+if [ "$sys" == "Linux" ]; then
+  uuid=$(cat /proc/sys/kernel/random/uuid)
+elif [ "$sys" == "Darwin" ]; then
+  uuid=$(echo $(uuidgen) | tr '[A-Z]' '[a-z]')
+else
+  uuid=$(od -x /dev/urandom | head -1 | awk '{OFS="-"; print $2$3,$4,$5,$6,$7$8$9}')
+fi
+
+sed -i "s/98bc7998-8e06-4193-84e2-38f2e10ee763/$uuid/g" ./v2ray/config-vless.json
+cp ./v2ray/config-vmess.json ./v2ray/config.json
+docker-compose up -d
+echo "-----------------------------------------------"
+echo "V2ray Configuration:"
+echo "Server:" $domainName
+echo "Port: 443"
+echo "UUID:" $uuid
+echo "WebSocket Host:" $domainName
+echo "WebSocket Path: /foxzc"
+echo "TLS: True"
+echo "TLS Host:" $domainName
+echo "-----------------------------------------------"
+echo "Trojan Configuration:"
+echo "Server:" $domainName
+echo "Port: 443"
+echo "Password:" $trojan_password
+echo "-----------------------------------------------"
+echo "Enjoy it!"
+
+cat <<-EOF >./info.txt
+	-----------------------------------------------
+	V2ray Configuration:
+	Server: $domainName
+	Port: 443
+	UUID: $uuid
+	WebSocket Host: $domainName
+	WebSocket Path: /foxzc
+	TLS: True
+	TLS Host: $domainName
+	-----------------------------------------------
+	Trojan Configuration:
+	Server: $domainName
+	Port: 443
+	Password: $trojan_password
+	-----------------------------------------------
+EOF
+}
+
+
+start_menu(){
+    clear
+    green " ===================================="
+    green " 介绍：v2ray+trojan+网页伪装docker版 "
+    green " 系统：debian或者ubuntu,centos未测试"
+    green " ===================================="
+    echo
+    green " 1.v2ray+vless+ws+tls+trojan+网页伪装"
+    green " 2. v2ray+vmess+ws+tls+trojan+网页伪装"
+    blue " 0. 退出脚本"
+    echo
+    read -p "请输入数字:" num
+    case "$num" in
+    1)
+    install_vless
+    ;;
+    2)
+    install_vmess
+    ;;
+    0)
+    exit 1
+    ;;
+    *)
+    clear
+    red "请输入正确数字"
+    sleep 1s
+    start_menu
+    ;;
+    esac
+}
+
+
+start_menu
+
 
