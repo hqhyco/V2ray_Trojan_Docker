@@ -10,21 +10,46 @@ red(){
     echo -e "\033[31m\033[01m$1\033[0m"
 }
 
+cmd="apt-get"
+# 笨笨的检测方法
+if [[ $(command -v apt-get) || $(command -v yum) ]] && [[ $(command -v systemctl) ]]; then
+
+	if [[ $(command -v yum) ]]; then
+
+		cmd="yum"
+
+	fi
+
+else
+
+	green "哈哈……这个辣鸡脚本不支持你的系统。 (-_-)"
+  green "备注: 仅支持 Ubuntu 16+ / Debian 8+ / CentOS 7+ 系统" && exit 1
+
+fi
+
 function first(){
+
+$cmd update -y
+$cmd install wget unzip curl -y
 
 checkDocker=$(which docker)
 checkDockerCompose=$(which docker-compose)
-if [ "$checkDocker" == "" ] && [ "$checkDockerCompose" == "" ]; then
-	echo "Please install docker and docker-compose!"
-	exit
-elif [ "$checkDocker" == "" ]; then
-	echo "Please install docker!"
-	exit
+if [ "$checkDocker" == "" ]; then
+  green "docker未安装，开始安装docker"
+  curl -sSL https://get.docker.com/ | sh
+  systemctl start docker
+  systemctl enable docker.service
+  green "恭喜docker结束！！"
 fi
 if [ "$checkDockerCompose" == "" ]; then
-	echo "Please install docker-compose!"
-	exit
+green "docker-compose未安装，开始安装docker-compos"
+	curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  chmod +x /usr/local/bin/docker-compose
+  ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+  green "恭喜docker-compose结束！！"
 fi
+
+
 
 rm -rf /etc/localtime
 ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
