@@ -4,11 +4,13 @@
 ```
 改用caddy2，随便加了个伪装的静态网页
 
+采用的是v2ray的ws+tls
+
 添加支持最新的vless协议
 
 可以自由选择vmess或者vless协议
 
-## 先安装依赖wget
+## 先安装依赖wget,最好连docker和docker-compose也先装好
 
 ## 一键脚本
 ```
