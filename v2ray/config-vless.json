@@ -1,0 +1,31 @@
+{
+    "inbounds": [
+      {
+        "port": 10000,
+        "listen":"0.0.0.0",
+        "protocol": "vless",
+        "settings": {
+          "clients": [
+            {
+              "id": "98bc7998-8e06-4193-84e2-38f2e10ee763",
+              "level": 0
+            }
+          ],
+          "decryption": "none"
+        },
+        "streamSettings": {
+          "network": "ws",
+          "wsSettings": {
+          "path": "/foxzc"
+          }
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "protocol": "freedom",
+        "settings": {}
+      }
+    ]
+  }
+  

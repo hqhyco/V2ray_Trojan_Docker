@@ -1,0 +1,18 @@
+# domain name.
+abc.com
+{
+# Set this path to your site's directory.
+	encode zstd gzip
+	root * /usr/share/caddy
+	file_server browse
+}
+# Set this path to your site's directory.
+#root * /usr/share/caddy
+:81
+{
+# Set this path to your site's directory.
+    encode zstd gzip
+    root * /usr/share/caddy
+    file_server browse
+    reverse_proxy /foxzc v2ray:10000
+}

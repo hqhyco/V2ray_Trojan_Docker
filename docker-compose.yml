@@ -1,0 +1,35 @@
+version: "3.7"
+services:
+  caddy:
+    image: caddy
+    container_name: caddy2
+    restart: always
+    links:
+      - v2ray:v2ray
+    ports:
+      - 80:80
+    volumes:
+      - /root/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - /root/caddy/data:/data
+      - /root/caddy/www:/usr/share/caddy
+  v2ray:
+    image: v2fly/v2fly-core
+    container_name: v2ray
+    restart: always
+    volumes:
+      - /root/v2ray/config.json:/etc/v2ray/config.json
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+  trojan:
+    image: trojangfw/trojan:latest
+    container_name: trojan
+    restart: always
+    ports:
+      - 443:443
+    volumes:
+      - /root/caddy/data/caddy/certificates/acme-v02.api.letsencrypt.org-directory/abc.com:/ssl
+      - /root/trojan:/config
+    links:
+        - caddy:caddy
+    depends_on: 
+          - caddy
