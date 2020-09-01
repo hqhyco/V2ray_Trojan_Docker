@@ -1,4 +1,5 @@
 # V2ray_Trojan_Docker
+v2ray+ws+tls+trojan+web的docker版
 ```
 参考大神的https://github.com/maidoudouo/V2ray_Trojan_Docker
 ```
