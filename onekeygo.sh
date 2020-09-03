@@ -51,6 +51,7 @@ cd /root
 if [[ -e "V2ray_Trojan_Docker.zip" ]]; then
 unzip -o V2ray_Trojan_Docker.zip
 [[ -e "/root/v2ray/config.json" ]] && rm /root/v2ray/config.json
+[[ -e "/root/trojan/config.json" ]] && rm /root/trojan/config.json
 else
 wget https://raw.githubusercontent.com/hqhyco/V2ray_Trojan_Docker/master/V2ray_Trojan_Docker.zip
 unzip -o V2ray_Trojan_Docker.zip
@@ -87,16 +88,35 @@ fi
 sed -i "s/98bc7998-8e06-4193-84e2-38f2e10ee763/$uuid/g" ./v2ray/config-vmess.json
 cp ./v2ray/config-vmess.json ./v2ray/config.json
 docker-compose up -d
+VMESSCODE=$(base64 -w 0 << EOF
+    {
+      "v": "2"
+      "ps": "${domainName}",
+      "add": "${domainName}",
+      "port": "443",
+      "id": "${uuid}",
+      "aid": "64",
+      "net": "ws",
+      "type": "none",
+      "host": "${domainName}",
+      "path": "/foxzc",
+      "tls": "tls"
+    }
+EOF
+)
+green "v2ray配置链接："
+echo vmess://${VMESSCODE}
+green "trojan配置链接："
+echo "trojan:${trojan_password}@${domainName}:443"
 echo "-----------------------------------------------"
 echo "V2ray Configuration:"
 echo "Server:" $domainName
 echo "Port: 443"
 echo "UUID:" $uuid
 echo "AlterId: 64"
-echo "WebSocket Host:" $domainName
+echo "Host:" $domainName
 echo "WebSocket Path: /foxzc"
 echo "TLS: True"
-echo "TLS Host:" $domainName
 echo "-----------------------------------------------"
 echo "Trojan Configuration:"
 echo "Server:" $domainName
@@ -106,6 +126,8 @@ echo "-----------------------------------------------"
 echo "Enjoy it!"
 
 cat <<-EOF >./info.txt
+  -----------------------------------------------
+  vmess://$VMESSCODE
 	-----------------------------------------------
 	V2ray Configuration:
 	Server: $domainName
@@ -116,6 +138,8 @@ cat <<-EOF >./info.txt
 	WebSocket Path: /foxzc
 	TLS: True
 	TLS Host: $domainName
+  -----------------------------------------------
+  trojan:$trojan_password@$domainName:443
 	-----------------------------------------------
 	Trojan Configuration:
 	Server: $domainName
@@ -152,15 +176,18 @@ fi
 sed -i "s/98bc7998-8e06-4193-84e2-38f2e10ee763/$uuid/g" ./v2ray/config-vless.json
 cp ./v2ray/config-vless.json ./v2ray/config.json
 docker-compose up -d
+green "trojan配置链接："
+echo "trojan:${trojan_password}@${domainName}:443"
+echo "-----------------------------------------------"
+echo "vless还没分享链接，自己手动配置吧"
 echo "-----------------------------------------------"
 echo "V2ray Configuration:"
 echo "Server:" $domainName
 echo "Port: 443"
 echo "UUID:" $uuid
-echo "WebSocket Host:" $domainName
+echo "Host:" $domainName
 echo "WebSocket Path: /foxzc"
 echo "TLS: True"
-echo "TLS Host:" $domainName
 echo "-----------------------------------------------"
 echo "Trojan Configuration:"
 echo "Server:" $domainName
@@ -170,6 +197,8 @@ echo "-----------------------------------------------"
 echo "Enjoy it!"
 
 cat <<-EOF >./info.txt
+  -----------------------------------------------
+  "vless还没分享链接，自己手动配置吧"
 	-----------------------------------------------
 	V2ray Configuration:
 	Server: $domainName
@@ -179,6 +208,8 @@ cat <<-EOF >./info.txt
 	WebSocket Path: /foxzc
 	TLS: True
 	TLS Host: $domainName
+  -----------------------------------------------
+  trojan:$trojan_password@$domainName:443
 	-----------------------------------------------
 	Trojan Configuration:
 	Server: $domainName
@@ -188,6 +219,15 @@ cat <<-EOF >./info.txt
 EOF
 }
 
+function remove(){
+  red "所有的都会删除掉哦！！"
+  read -p "确认输入y" confirm
+  [[ $confirm != "y" ]] && exit 1
+  docker rm -f trojan v2ray caddy2
+  cd /root
+  rm -rf caddy2 v2ray trojan docker-compose.yml info.txt V2ray_Trojan_Docker.zip
+  green "删除成功！"
+}
 
 start_menu(){
     clear
@@ -199,6 +239,10 @@ start_menu(){
     echo
     green " 1. v2ray+vless+ws+tls+trojan+网页伪装"
     green " 2. v2ray+vmess+ws+tls+trojan+网页伪装"
+    green " 3. 查看链接和配置"
+    green " 4. 更新到最新的镜像并应用到容器"
+    green " 5. 卸载(卸载后才可以更换v2ray协议)"
+    green " 6. 删除(所有的都会删除掉哦！！)"
     blue " 0. 退出脚本"
     echo
     read -p "请输入数字:" num
@@ -210,6 +254,24 @@ start_menu(){
     2)
     first
     install_vmess
+    ;;
+    3)
+    [[ -e "/root/info.txt" ]] && cat /root/info.txt || red "还未安装v2ray和Trojan！"
+    sleep 1s
+    start_menu
+    ;;
+    4)
+    docker-compose pull
+    docker-compose up -d --build
+    ;;
+    5)
+    docker rm -f trojan v2ray caddy2
+    green "卸载完成！"
+    sleep 1s
+    start_menu
+    ;;
+    6)
+    remove
     ;;
     0)
     exit 1
