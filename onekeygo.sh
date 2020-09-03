@@ -107,7 +107,7 @@ EOF
 green "v2ray配置链接："
 echo vmess://${VMESSCODE}
 green "trojan配置链接："
-echo "trojan:${trojan_password}@${domainName}:443"
+echo "trojan://${trojan_password}@${domainName}:443"
 echo "-----------------------------------------------"
 echo "V2ray Configuration:"
 echo "Server:" $domainName
@@ -139,7 +139,7 @@ cat <<-EOF >./info.txt
 	TLS: True
 	TLS Host: $domainName
   -----------------------------------------------
-  trojan:$trojan_password@$domainName:443
+  trojan://$trojan_password@$domainName:443
 	-----------------------------------------------
 	Trojan Configuration:
 	Server: $domainName
@@ -177,7 +177,7 @@ sed -i "s/98bc7998-8e06-4193-84e2-38f2e10ee763/$uuid/g" ./v2ray/config-vless.jso
 cp ./v2ray/config-vless.json ./v2ray/config.json
 docker-compose up -d
 green "trojan配置链接："
-echo "trojan:${trojan_password}@${domainName}:443"
+echo "trojan://${trojan_password}@${domainName}:443"
 echo "-----------------------------------------------"
 echo "vless还没分享链接，自己手动配置吧"
 echo "-----------------------------------------------"
@@ -209,7 +209,7 @@ cat <<-EOF >./info.txt
 	TLS: True
 	TLS Host: $domainName
   -----------------------------------------------
-  trojan:$trojan_password@$domainName:443
+  trojan://$trojan_password@$domainName:443
 	-----------------------------------------------
 	Trojan Configuration:
 	Server: $domainName
