@@ -225,7 +225,7 @@ function remove(){
   [[ $confirm != "y" ]] && exit 1
   docker rm -f trojan v2ray caddy2
   cd /root
-  rm -rf caddy2 v2ray trojan docker-compose.yml info.txt V2ray_Trojan_Docker.zip
+  rm -rf caddy v2ray trojan docker-compose.yml info.txt V2ray_Trojan_Docker.zip
   green "删除成功！"
 }
 
